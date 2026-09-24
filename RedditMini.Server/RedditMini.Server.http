@@ -1,0 +1,6 @@
+@RedditMini.Server_HostAddress = http://localhost:5085
+
+GET {{RedditMini.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

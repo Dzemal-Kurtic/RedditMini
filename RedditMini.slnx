@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="redditmini.client/redditmini.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="RedditMini.Server/RedditMini.Server.csproj" />
+</Solution>
