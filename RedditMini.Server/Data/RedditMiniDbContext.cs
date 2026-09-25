@@ -3,11 +3,11 @@ using RedditMini.Server.Models;
 
 namespace RedditMini.Server.Data;
 
-public class MiniRedditDbContext : DbContext
+public class RedditMiniDbContext : DbContext
 {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Community> Communities { get; set; }
-    public MiniRedditDbContext(DbContextOptions<MiniRedditDbContext> options) : base(options)
+    public RedditMiniDbContext(DbContextOptions<RedditMiniDbContext> options) : base(options)
     {
 
     }

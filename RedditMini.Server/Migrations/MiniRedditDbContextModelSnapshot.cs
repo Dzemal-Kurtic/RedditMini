@@ -10,7 +10,7 @@ using RedditMini.Server.Data;
 
 namespace RedditMini.Server.Migrations
 {
-    [DbContext(typeof(MiniRedditDbContext))]
+    [DbContext(typeof(RedditMiniDbContext))]
     partial class MiniRedditDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

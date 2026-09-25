@@ -11,7 +11,7 @@ using RedditMini.Server.Data;
 
 namespace RedditMini.Server.Migrations
 {
-    [DbContext(typeof(MiniRedditDbContext))]
+    [DbContext(typeof(RedditMiniDbContext))]
     [Migration("20260924153034_initialCreate")]
     partial class initialCreate
     {

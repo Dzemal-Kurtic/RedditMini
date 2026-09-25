@@ -1,6 +1,6 @@
 ﻿namespace RedditMini.Server.Models;
 
-public class Community
+public class Community : IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

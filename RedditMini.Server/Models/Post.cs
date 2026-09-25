@@ -1,6 +1,6 @@
 ﻿namespace RedditMini.Server.Models;
 
-public class Post
+public class Post : IEntity
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;

@@ -11,7 +11,7 @@ using RedditMini.Server.Data;
 
 namespace RedditMini.Server.Migrations
 {
-    [DbContext(typeof(MiniRedditDbContext))]
+    [DbContext(typeof(RedditMiniDbContext))]
     [Migration("20260925065042_addConstraintsToModels")]
     partial class addConstraintsToModels
     {
