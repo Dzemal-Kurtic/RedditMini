@@ -18,6 +18,4 @@ public class CommunityRepository : Repository<Community>, ICommunityRepository
     {
         return await _set.AnyAsync(c => c.Name == name);
     }
-
-
 }
