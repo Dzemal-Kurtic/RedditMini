@@ -1,4 +1,6 @@
 ﻿using RedditMini.Server.DTOs;
+using RedditMini.Server.Exceptions;
+using RedditMini.Server.Mappings;
 using RedditMini.Server.Models;
 using RedditMini.Server.Repositories;
 
@@ -7,28 +9,63 @@ namespace RedditMini.Server.Services;
 public class CommunityService : ICommunityService
 {
     private readonly ICommunityRepository _communityRepository;
-    public CommunityService(CommunityRepository communityRepository)
+    private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    public CommunityService(
+        ICommunityRepository communityRepository,
+        IPostRepository postRepository,
+        IUnitOfWork unitOfWork
+        )
     {
         _communityRepository = communityRepository;
+        _postRepository = postRepository;
+        _unitOfWork = unitOfWork;
     }
     public async Task<CommunityDto> CreateAsync(CreateCommunityDto createCommunityDto)
     {
-        var community = new Community{ };
-        return await _communityRepository.Add(createCommunityDto);
+        var nameExists = await _communityRepository.NameExistsAsync(createCommunityDto.Name);
+        if (nameExists)
+        {
+            throw new DuplicateCommunityNameException(createCommunityDto.Name);
+        }
+        var community = new Community
+        {
+            Name = createCommunityDto.Name,
+            Description = createCommunityDto.Description,
+            CreatedAt = DateTime.UtcNow,
+        };
+        _communityRepository.Add(community);
+        await _unitOfWork.SaveChangesAsync();
+        return community.ToCommunityDto(0);
     }
 
-    public Task<IEnumerable<CommunityDto>> GetAllAsync()
+    public async Task<IEnumerable<CommunityDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var communities = await _communityRepository.GetAllWithPostCountAsync();
+        return communities.Select(c => c.Community.ToCommunityDto(c.PostCount));
     }
 
-    public Task<CommunityDto?> GetByIdAsync(int id)
+    public async Task<CommunityDto?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var community = await _communityRepository.GetByIdAsync(id);
+        if (community is null)
+        {
+            return null;
+        }
+        var postCount = await _postRepository.CountByCommunityAsync(id);
+        return community.ToCommunityDto(postCount);
     }
 
-    public Task<CommunityDto?> UpdateAsync(int id, UpdateCommunityDto updateCommunityDto)
+    public async Task<CommunityDto?> UpdateAsync(int id, UpdateCommunityDto updateCommunityDto)
     {
-        throw new NotImplementedException();
+        var community = await _communityRepository.GetByIdAsync(id);
+        if (community is null)
+        {
+            return null;
+        }
+        community.Description = updateCommunityDto.Description;
+        await _unitOfWork.SaveChangesAsync();
+        var postCount = await _postRepository.CountByCommunityAsync(community.Id);
+        return community.ToCommunityDto(postCount);
     }
 }

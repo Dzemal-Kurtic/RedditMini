@@ -6,4 +6,5 @@ public interface ICommunityRepository : IRepository<Community>
 {
     Task<Community?> GetByNameAsync(string name);
     Task<bool> NameExistsAsync(string name);
+    Task<IEnumerable<CommunityWithPostCount>> GetAllWithPostCountAsync();
 }

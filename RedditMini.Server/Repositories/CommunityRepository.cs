@@ -13,6 +13,14 @@ public class CommunityRepository : Repository<Community>, ICommunityRepository
     {
         return await _set.FirstOrDefaultAsync(c => c.Name == name);
     }
+    public async Task<IEnumerable<CommunityWithPostCount>> GetAllWithPostCountAsync()
+    {
+        return await _set
+            .AsNoTracking()
+            .OrderBy(c => c.Name)
+            .Select(c => new CommunityWithPostCount(c, c.Posts.Count))
+            .ToListAsync();
+    }
 
     public async Task<bool> NameExistsAsync(string name)
     {
