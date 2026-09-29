@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RedditMini.Server.Data;
+using RedditMini.Server.Middleware;
+using RedditMini.Server.Repositories;
+using RedditMini.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,13 +13,21 @@ builder.Services.AddDbContext<RedditMiniDbContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICommunityService, CommunityService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
+
+app.UseExceptionHandler();
 app.UseDefaultFiles();
 app.MapStaticAssets();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
