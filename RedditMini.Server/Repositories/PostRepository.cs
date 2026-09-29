@@ -17,10 +17,17 @@ public class PostRepository : Repository<Post>, IPostRepository
 
     public async Task<IEnumerable<Post>> GetByCommunityAsync(int communityId, int pageNumber = 1, int pageSize = 20)
     {
-        return await _set.AsNoTracking().Where(p => p.CommunityId == communityId)
-                  .OrderByDescending(p => p.CreatedAt)
-                  .Skip((pageNumber - 1) * pageSize)
-                  .Take(pageSize)
-                  .ToListAsync();
+        return await _set.AsNoTracking()
+            .Where(p => p.CommunityId == communityId)
+            .OrderByDescending(p => p.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<Post?> GetWithCommunityAsync(int postId)
+    {
+        return await _set.Include(p => p.Community)
+            .FirstOrDefaultAsync(p => p.Id == postId);
     }
 }
