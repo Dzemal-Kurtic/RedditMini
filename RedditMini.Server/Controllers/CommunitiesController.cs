@@ -38,9 +38,9 @@ public class CommunitiesController : ControllerBase
 
     [HttpGet]
     [Route("{id}/posts")]
-    public async Task<ActionResult<PagedResult<PostDto>>> GetByCommunity(int id, int pageNumber = 1, int pageSize = 20)
+    public async Task<ActionResult<PagedResult<PostDto>>> GetByCommunity(int id, [FromQuery] PaginationParams pagination)
     {
-        var pagedPostsDtos = await _postService.GetByCommunityAsync(id, pageNumber, pageSize);
+        var pagedPostsDtos = await _postService.GetByCommunityAsync(id, pagination.PageNumber, pagination.PageSize);
         if (pagedPostsDtos is null)
         {
             return NotFound();
@@ -51,20 +51,20 @@ public class CommunitiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CommunityDto>> Create(CreateCommunityDto createCommunityDto)
     {
-        var communityDto = await _communityService.CreateAsync(createCommunityDto);
-        return CreatedAtAction(nameof(GetById), new { id = communityDto.Id }, communityDto);
+        var community = await _communityService.CreateAsync(createCommunityDto);
+        return CreatedAtAction(nameof(GetById), new { id = community.Id }, community);
     }
 
     [HttpPut]
     [Route("{id}")]
     public async Task<ActionResult<CommunityDto>> Update(int id, UpdateCommunityDto updateCommunityDto)
     {
-        var communityDto = await _communityService.UpdateAsync(id, updateCommunityDto);
-        if (communityDto is null)
+        var community = await _communityService.UpdateAsync(id, updateCommunityDto);
+        if (community is null)
         {
             return NotFound();
         }
-        return Ok(communityDto);
+        return Ok(community);
     }
 }
 
