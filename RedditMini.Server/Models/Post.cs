@@ -6,6 +6,10 @@ public class Post : IEntity
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+
     public int CommunityId { get; set; }
     public Community Community { get; set; } = null!;
+
+    public string AuthorId { get; set; } = string.Empty;
+    public AppUser Author { get; set; } = null!;
 }

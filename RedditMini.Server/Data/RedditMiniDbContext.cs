@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RedditMini.Server.Models;
 
 namespace RedditMini.Server.Data;
 
-public class RedditMiniDbContext : DbContext
+public class RedditMiniDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<Post> Posts { get; set; } = null!;
     public DbSet<Community> Communities { get; set; } = null!;
@@ -30,6 +31,10 @@ public class RedditMiniDbContext : DbContext
         {
             entity.Property(p => p.Title)
                 .HasMaxLength(300);
+            entity.HasOne(p => p.Author)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

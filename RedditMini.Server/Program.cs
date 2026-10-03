@@ -12,8 +12,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<RedditMiniDbContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    opts.UseSeeding((context, _) => SeedData.Seed(context));
-    opts.UseAsyncSeeding((context, _, ct) => SeedData.SeedAsync(context, ct));
+    //opts.UseSeeding((context, _) => SeedData.Seed(context));
+    //opts.UseAsyncSeeding((context, _, ct) => SeedData.SeedAsync(context, ct));
 });
 builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
