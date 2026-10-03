@@ -5,8 +5,8 @@ namespace RedditMini.Server.Data;
 
 public class RedditMiniDbContext : DbContext
 {
-    public DbSet<Post> Posts { get; set; }
-    public DbSet<Community> Communities { get; set; }
+    public DbSet<Post> Posts { get; set; } = null!;
+    public DbSet<Community> Communities { get; set; } = null!;
     public RedditMiniDbContext(DbContextOptions<RedditMiniDbContext> options) : base(options)
     {
 
