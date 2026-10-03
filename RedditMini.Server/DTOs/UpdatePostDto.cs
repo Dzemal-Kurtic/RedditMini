@@ -3,5 +3,5 @@
 namespace RedditMini.Server.DTOs;
 
 public record UpdatePostDto(
-    [property: Required] string Content
+    [Required] string Content
     );

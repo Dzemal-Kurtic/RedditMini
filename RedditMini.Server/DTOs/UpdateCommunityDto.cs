@@ -3,5 +3,5 @@
 namespace RedditMini.Server.DTOs;
 
 public record UpdateCommunityDto(
-    [property: MaxLength(500)] string? Description
+    [MaxLength(500)] string? Description
     );

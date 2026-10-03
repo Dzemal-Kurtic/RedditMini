@@ -3,6 +3,6 @@
 namespace RedditMini.Server.DTOs;
 
 public record CreateCommunityDto(
-    [property: Required, MaxLength(50)] string Name,
-    [property: MaxLength(500)] string? Description
+    [Required, MaxLength(50)] string Name,
+    [MaxLength(500)] string? Description
     );
